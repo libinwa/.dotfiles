@@ -7,7 +7,7 @@
             "post_process": ":exec 'helptags '.PackHome().'/start/vim-colors-solarized/doc'",
             "on_finish": [
                           "let pathofsolarized = PackHome().'/start/vim-colors-solarized'",
-                          "if isdirectory(pathofsolarized) && (!WINDOWS() || has('gui_running'))",
+                          "if isdirectory(pathofsolarized)",
                           "    syntax enable",
                           "    set background=dark",
                           "    let g:solarized_termcolors=256",

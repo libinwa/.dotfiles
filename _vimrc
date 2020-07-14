@@ -1291,57 +1291,6 @@
         command! -nargs=+ Filestat call SetFilestat(<f-args>)
     " }
 
-    " Adjust guifont size {
-        function! FontPattern()
-            let pattern = ''
-            if LINUX()
-                let pattern = '\([^,]*\\ \)\([1-9][0-9]*\)'
-            elseif OSX()
-                let pattern = '\([^,]*:h\)\([1-9][0-9]*\)'
-            elseif WINDOWS()
-                let pattern = '\([^,]*:h\)\([1-9][0-9]*\)'
-            endif
-            return pattern
-        endfunction
-
-        function! CalcFontSize(font, size)
-            let  delta = 0
-            let amount = 0
-            let pattern = FontPattern()
-            if !empty(a:size)
-                let prefix = strpart(a:size, 0, 1)
-                if prefix ==? '+' || prefix ==? '-'
-                    let delta = str2nr(a:size)
-                endif
-            endif
-            if delta !=? 0
-                let presize = substitute(a:font, pattern, '\2', '')
-                let amount = presize + delta
-            else
-                let amount = str2nr(a:size)
-            endif
-            return substitute(a:font, pattern, '\1', '').amount
-        endfunction
-
-        " Turn up 2unit, call AdjustFontSize('+2')
-        " Turn down 2unit, call AdjustFontSize('-2')
-        " Directly set font size 18unit, call  AdjustFontSize('18')
-        function! AdjustFontSize(size)
-            if has('gui_running')
-                let pattern = FontPattern()
-                let &guifont = substitute(&guifont,
-                            \pattern,
-                            \'\=CalcFontSize(submatch(0), '.string(a:size).')',
-                            \'g')
-            endif
-        endfunction
-
-        " <Shift-Up> turn up 1unit, <Shift-Down> turn down 1unit
-        nnoremap <silent> <S-Up> :call AdjustFontSize('+1')<CR>
-        nnoremap <silent> <S-Down> :call AdjustFontSize('-1')<CR>
-    " }
-
-
     " Toggle Terminal Window helper {
         " Open a new or previous Terminal Window
         function! TerminalOpen(...)
@@ -1637,7 +1586,7 @@
             \                   "post_process": ":exec 'helptags '.PackHome().'/start/vim-colors-solarized/doc'",
             \                   "on_finish": [
             \                                 "let pathofsolarized = PackHome().'/start/vim-colors-solarized'",
-            \                                 "if isdirectory(pathofsolarized) && (!WINDOWS() || has('gui_running'))",
+            \                                 "if isdirectory(pathofsolarized)",
             \                                 "    syntax enable",
             \                                 "    set background=dark",
             \                                 "    let g:solarized_termcolors=256",
