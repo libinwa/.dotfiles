@@ -1,0 +1,4 @@
+# git ignore
+*.un~
+*.swp
+**/.cache/

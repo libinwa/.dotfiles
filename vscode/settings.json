@@ -1,0 +1,134 @@
+{
+    "editor.fontSize": 18,
+    "editor.fontFamily": "Inconsolata, Consolas, 'Courier New', monospace",
+    "editor.autoIndent": "keep",
+    "editor.detectIndentation": true, 
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true, 
+    "editor.wordWrap": "off",
+    "editor.lineNumbers": "relative",
+    "editor.suggestSelection": "first",
+    "editor.snippetSuggestions": "top",
+    "editor.tabCompletion": "on",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "workbench.colorTheme": "Solarized Dark",
+    "workbench.editor.highlightModifiedTabs": true,
+    "terminal.integrated.shell.windows": "C:\\Windows\\System32\\cmd.exe",
+    "terminal.integrated.fontFamily": "'Cascadia Code', Inconsolata, Consolas, 'Courier New', monospace",
+    "terminal.integrated.fontSize": 17,
+    "files.autoGuessEncoding": true,
+    "files.exclude": {
+        "**/._*": true,
+        "**/.*.un~": true
+    },
+    "vim.vimrc.enable": true,
+    "vim.vimrc.path": "${execPath}/data/user-data/User/_vimrc",
+    "vim.debug.loggingLevelForConsole": "debug",
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.easymotion": true,
+    "vim.sneak": true,
+    "vim.insertModeKeyBindings": [
+        {
+            "before": ["j", "k"],
+            "after": ["<Esc>"]
+        }
+    ],
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+          "before": ["<leader>", "d"],
+          "after": ["d", "d"]
+        },
+        {
+          "before": ["<BS>"],
+          "commands": [":noh"]
+        },
+        {
+            "before": ["<leader>","p"],
+            "commands": [
+                "workbench.action.showCommands"
+            ]
+        },
+        {
+            "before": ["<leader>", "h", "h"],
+            "commands": [
+                {
+                    "command": "editor.action.insertSnippet",
+                    "when": "editorTextFocus",
+                    "args": {
+                        "name": "AddHeadFileHeader"
+                    }
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "g", "h"],
+            "commands": [
+                {
+                    "command": "editor.action.insertSnippet",
+                    "when": "editorTextFocus",
+                    "args": {
+                        "name": "AddImplfileHeader"
+                    }
+                }
+            ]
+        },
+        {
+            "before": ["<leader>", "m", "h"],
+            "commands": [
+                {
+                    "command": "editor.action.insertSnippet",
+                    "when": "editorTextFocus",
+                    "args": {
+                        "name": "AddFuncHeader"
+                    }
+                }
+            ]
+        },
+        // using Bookmarks extension
+        {
+            "before": ["<leader>", "m", "b"],
+            "commands": [
+                "bookmarks.toggle"
+            ]
+        },
+        {
+            "before": ["<leader>", "b"],
+            "commands": [
+                "bookmarks.list"
+            ]
+        }
+    ],
+    
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                ">"
+            ],
+            "commands": [
+                "editor.action.indentLines"
+            ]
+        },
+        {
+            "before": [
+                "<"
+            ],
+            "commands": [
+                "editor.action.outdentLines"
+            ]
+        },
+    ],
+    "vim.handleKeys": {
+        "<C-f>": false
+    },
+
+    // using Path Autocomplete extension
+    "path-autocomplete.excludedItems": {
+        "**/{.DS_Store,.git,.gitignore,node_modules}": {
+            "when": "**"
+        }
+    },
+
+    // java
+    "java.configuration.checkProjectSettingsExclusions": false
+}

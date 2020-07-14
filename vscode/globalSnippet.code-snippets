@@ -1,0 +1,98 @@
+{
+	// Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+
+	"AddHeadFileHeader": {
+	    "prefix": "/*",
+	    "body":[
+            "/*",
+            " * @(#) ${TM_FILENAME}       Version: -    Date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}  ${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}",
+            " *",
+            " * Copyright (C), ${CURRENT_YEAR}, Def Tech. Co., Ltd.",
+            " *",
+            " * Description:     ///< 用于详细说明此程序文件完成的主要功能，与其他模块",
+            " *                  ///< 或函数的接口，输出值、取值范围、含义及参数间的控",
+            " *                  ///< 制、顺序、独立或依赖等关系",
+            " * Others:          ///< 其它内容的说明",
+            " * Function List:   ///< 主要函数列表，每条记录应包括函数名及功能简要说明",
+            " *  1. ....",
+            " * History:        ///< 修改历史记录列表，每条修改记录应包括修改日期、修改",
+            " *                 ///< 者及修改内容简述",
+            " *   1. Date: ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE}$1",
+            " *      Author: ${2:libin}",
+            " *      Modification: $3",
+            " *   2. ...",
+            " */"
+	    ],
+	    "description": "Add Headfile Header"
+	},
+
+	"AddImplfileHeader": {
+	    "prefix": "/*",
+	    "body": [
+            "/*",
+            " * @(#) ${TM_FILENAME}       Version: -    Date: ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE}  ${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}",
+            " *",
+            " * Copyright (C), ${CURRENT_YEAR}, Def Tech. Co., Ltd.",
+            " *",
+            " * Description:     ///< 描述本文件的内容、功能、内容各部分之间的关系",
+            " *                  ///< 及本文件与其他文件关系等",
+            " * Others:          ///< 其它内容的说明",
+            " * Function List:   ///< 主要函数及其功能",
+            " *   1. --------",
+            " * History:        ///< 历史修改记录",
+            " *   <author>  <time>   <version >   <desc>",
+            " * 1. ${1:libin}  ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE}$2  1.0   build this moudle$3",
+            " */"
+	    ],
+	    "description": "Add Implfile Header"
+	},
+
+	"AddFuncHeader": {
+	    "prefix": "/**",
+	    "body": [
+            "/**",
+            " *  ///< Brief description which ends at this dot.",
+            " * <p> ///< Details description follow here, 1st line.",
+            " *     ///< Details description follow here, 2st line.",
+            " *",
+            " * @param   [in]     ///< 输入参数说明, 包括每个参数的作用和",
+            " *                   ///< 取值范围，以及各参数间关系",
+            " * @param   [out]    ///< 输出参数说明",
+            " * @param   [in,out] ///< 输入输出参数说明",
+            " * @return           ///< 函数返回值说明",
+            " *",
+            " * @see class",
+            " * @see #prop|func",
+            " * @see class#prop|func",
+            " *",
+            " * @author ${1:libin}  ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE}$2 ",
+            " * @version 1.0 ",
+            " *",
+            " * History:        ///< 历史修改记录",
+            " *   <author>  <time>   <version >   <desc>",
+            " * 1. ${1:libin}  ${CURRENT_YEAR}.${CURRENT_MONTH}.${CURRENT_DATE}$2  1.0  created",
+            " */"
+	    ],
+	    "description": "Add Function Header"
+	},
+
+	"#ifndef … #define … #endif": {
+    	"prefix": ["#ifdef", "#ifndef"],
+    	"body": "#ifndef $1\n#define $1 $2\n#endif\t// $1"
+    }
+}

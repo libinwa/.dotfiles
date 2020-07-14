@@ -1,0 +1,275 @@
+{
+    "start": [
+        {
+            "name": "vim-colors-solarized",
+            "description": "Solarized Colorscheme for Vim",
+            "wget": "git clone --depth=1 git://github.com/altercation/vim-colors-solarized.git",
+            "post_process": ":exec 'helptags '.PackHome().'/start/vim-colors-solarized/doc'",
+            "on_finish": [
+                          "let pathofsolarized = PackHome().'/start/vim-colors-solarized'",
+                          "if isdirectory(pathofsolarized) && (!WINDOWS() || has('gui_running'))",
+                          "    syntax enable",
+                          "    set background=dark",
+                          "    let g:solarized_termcolors=256",
+                          "    let g:solarized_termtrans=1",
+                          "    let g:solarized_contrast='normal'",
+                          "    let g:solarized_visibility='normal'",
+                          "    exec 'colorscheme '.fnameescape('solarized')",
+                          "endif"
+                         ]
+        },
+
+        {
+            "name": "lightline.vim",
+            "description": "A light and configurable statusline/tabline plugin for Vim",
+            "wget": "git clone --depth=1 https://github.com/itchyny/lightline.vim.git",
+            "post_process": ":exec 'helptags '.PackHome().'/start/lightline.vim/doc'",
+            "on_finish": ["set noshowmode",
+                          "let g:lightline = get(g:, 'lightline', { 'active':{}, 'inactive':{}, 'tabline':{}, 'tab':{} })",
+                          "let g:lightline['active']['left']  = [ [ 'mode', 'paste'], [ 'gitbranch', 'readonly', 'filename', 'modified'], ['status'] ]",
+                          "let g:lightline['active']['right'] = [ [ 'lineinfo' ], [ 'percent' ], [ 'fileformat', 'fileencoding', 'filetype' ] ]",
+                          "let g:lightline['component_function'] = {'fileencoding': 'FencStr'}",
+                          "call extend(g:lightline['component_function'], {'gitbranch': 'fugitive#head'})",
+                          "call extend(g:lightline['component_function'], {'status': 'kite#statusline'})"
+                         ]
+        },
+
+        {
+          "name" : "vim-gutentags",
+          "description" : "Tagging system agent, and gutentags_plus works with gutentags.",
+          "wget" : [
+                    "git clone --depth=1 https://github.com/ludovicchabant/vim-gutentags.git && ",
+                    "git clone --depth=1 https://github.com/skywind3000/gutentags_plus.git"
+                   ],
+          "post_process" : [
+                            "exec 'helptags '.PackHome().'/start/vim-gutentags/doc'",
+                            "exec 'helptags '.PackHome().'/start/gutentags_plus/doc'"
+                           ],
+          "on_finish" : [
+                         "call DirRoot()",
+                         "let g:gutentags_project_root = g:dirroot.markers",
+                         "let g:gutentags_modules = []",
+                         "if executable('ctags')",
+                         "    let g:gutentags_modules += ['ctags']",
+                         "endif",
+                         "if executable('gtags') && executable('gtags-cscope')",
+                         "    let g:gutentags_modules += ['gtags_cscope']",
+                         "endif",
+                         "let g:gutentags_ctags_tagfile = '.cache/.tags'",
+                         "let g:gutentags_gtags_dbpath = '.cache/tags'",
+                         "let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']",
+                         "let g:gutentags_ctags_extra_args += ['--c-kinds=+px']",
+                         "let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']",
+                         "let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']",
+                         "let g:gutentags_auto_add_gtags_cscope = 0",
+                         "let g:gutentags_define_advanced_commands = 1",
+                         "let g:gutentags_plus_switch = 1"
+                        ]
+        },
+
+        {
+          "name" : "fzf",
+          "description" : "Apply blazingly fast fzf's vimscript interface here.",
+          "wget" : "git clone --depth=1 https://github.com/junegunn/fzf.git",
+          "post_process" : ":exec 'helptags '.PackHome().'/start/fzf/doc'",
+          "on_finish": ""
+        },
+
+        {
+          "name" : "fzf.vim",
+          "description" : "fzfз Vim.",
+          "wget" : "git clone --depth=1 https://github.com/junegunn/fzf.vim.git",
+          "post_process" : ":exec 'helptags '.PackHome().'/start/fzf.vim/doc'",
+          "on_finish": [
+                        "let g:fzf_command_prefix = 'Fzf'",
+                        "command! -bang FzfPFiles call fzf#vim#files(DirRoot(), <bang>0)",
+                        "if has('popupwin')",
+                        "    let g:fzf_layout={'window':{'width':0.9, 'height':0.6, 'border':'rounded', 'highlight':'Question'}}",
+                        "endif",
+                        "if executable('fzf') && !exists('g:loaded_fzf')",
+                        "    let fzf_script_needed = expand($HOME).'/.fzf/plugin/fzf.vim'",
+                        "    if filereadable(fzf_script_needed)",
+                        "        exec 'source '.fzf_script_needed",
+                        "    endif",
+                        "endif",
+                        "nmap <leader><tab> <plug>(fzf-maps-n)",
+                        "xmap <leader><tab> <plug>(fzf-maps-x)",
+                        "omap <leader><tab> <plug>(fzf-maps-o)",
+                        "imap <c-x><c-k> <plug>(fzf-complete-word)",
+                        "imap <c-x><c-f> <plug>(fzf-complete-path)",
+                        "imap <c-x><c-j> <plug>(fzf-complete-file-ag)",
+                        "imap <c-x><c-l> <plug>(fzf-complete-line)"
+                       ]
+        },
+
+        {
+          "name" : "ultisnips",
+          "description" : "Ultimate solution for snippets in Vim.",
+          "wget" : [
+                   "git clone --depth=1 https://github.com/SirVer/ultisnips.git && ",
+                   "git clone --depth=1 https://github.com/honza/vim-snippets.git"
+                   ],
+          "post_process" : [
+                            "exec 'helptags '.PackHome().'/start/ultisnips/doc'",
+                            "exec 'helptags '.PackHome().'/start/vim-snippets/doc'"
+                           ],
+          "on_finish": [
+                        "let g:UltiSnipsExpandTrigger='<tab>'",
+                        "let g:UltiSnipsJumpForwardTrigger='<c-b>'",
+                        "let g:UltiSnipsJumpBackwardTrigger='<c-z>'",
+                        "let g:UltiSnipsEditSplit='vertical'"
+                       ]
+        },
+
+        {
+          "name" : "mycode-snippets",
+          "description" : "My code snippets repo.",
+          "wget" : "git clone --depth=1 https://github.com/libinwa/mycode-snippets.git",
+          "post_process" : "",
+          "on_finish": ""
+        },
+
+        {
+          "name" : "undotree",
+          "description" : "",
+          "wget" : "git clone --depth=1 https://github.com/mbbill/undotree.git" ,
+          "post_process" : ":exec 'helptags '.PackHome().'/start/undotree/doc'",
+          "on_finish" : ["nnoremap <Leader>u :UndotreeToggle<CR>",
+                         "let g:undotree_SetFocusWhenToggle=1"
+                        ]
+        },
+
+        {
+            "name": "vim-quickui",
+            "description": "",
+            "wget" : "git clone --depth=1 https://github.com/skywind3000/vim-quickui.git",
+            "post_process" : ":exec 'helptags '.PackHome().'/start/vim-quickui/doc'",
+            "on_finish": [ "let g:quickui_border_style = 2", 
+                           "augroup MyQuickfixPreview",
+                           "  au!",
+                           "  au FileType qf noremap <silent><buffer> p :call quickui#tools#preview_quickfix()<CR>",
+                           "augroup END",
+                           "nnoremap <F3> :call quickui#tools#preview_tag('')<CR>"
+                         ]
+        },
+
+        {
+          "name" : "vim-fugitive",
+          "description" : "the best Git wrapper of all time",
+          "wget" : "git clone --depth=1 https://github.com/tpope/vim-fugitive.git",
+          "post_process" : ":exec 'helptags '.PackHome().'/start/vim-fugitive/doc'",
+          "on_finish" : [
+                         "if exists('*fugitive#statusline')",
+                         "    set statusline+=%{fugitive#statusline()}",
+                         "endif",
+                         "nnoremap <silent> <Leader>gs :Gstatus<CR>",
+                         "nnoremap <silent> <Leader>gd :Gdiff<CR>",
+                         "nnoremap <silent> <Leader>gc :Gcommit<CR>",
+                         "nnoremap <silent> <Leader>gb :Gblame<CR>",
+                         "nnoremap <silent> <Leader>gl :Glog<CR>",
+                         "nnoremap <silent> <Leader>gp :Git push<CR>",
+                         "nnoremap <silent> <Leader>gr :Gread<CR>",
+                         "nnoremap <silent> <Leader>gw :Gwrite<CR>",
+                         "nnoremap <silent> <Leader>ge :Gedit<CR>",
+                         "nnoremap <silent> <Leader>gi :Git add -p %<CR>",
+                         "nnoremap <silent> <Leader>gg :SignifyToggle<CR>"
+                        ]
+        }
+
+    ],
+
+    "opt": [
+        {
+            "name": "vim-game-code-break",
+            "description": "It's a game.",
+            "wget": "git clone --depth=1 https://github.com/johngrib/vim-game-code-break.git",
+            "post_process": "",
+            "on_finish": ""
+        },
+
+        {
+            "name": "ale",
+            "description": "Asynchronous linting/fixing for Vim and LSP integration",
+            "wget": "git clone --depth=1 https://github.com/dense-analysis/ale.git",
+            "post_process": ":exec 'helptags '.PackHome().'/opt/ale/doc'",
+            "on_finish": [
+                          "let    g:ale_sign_info = ' ¡'",
+                          "let g:ale_sign_warning = '!!'",
+                          "let   g:ale_sign_error = '✗✗'",
+                          "nmap <silent> <C-k> <Plug>(ale_previous_wrap)<CR>",
+                          "nmap <silent> <C-j> <Plug>(ale_next_wrap)<CR>",
+                          "let g:ale_fixers = { '*' : ['remove_trailing_lines', 'trim_whitespace']}",
+                          "call extend(g:ale_fixers,  { 'javascript' : ['prettier', 'eslint']})",
+                          "call extend(g:ale_fixers,  { 'python' : ['add_blank_lines_for_python_control_statements', 'autopep8', 'isort', 'yapf']})",
+                          "nmap <silent> <F8> <Plug>(ale_detail)<CR>",
+                          "nmap <silent> <C-F8> <Plug>(ale_fix)<CR>",
+                          "let g:ale_completion_enabled = 1",
+                          "nnoremap <silent> gd :ALEGoToDefinition<CR>",
+                          "nnoremap <silent> gr :ALEFindReferences<CR>",
+                          "nnoremap <silent> gh :ALEHover<CR>",
+                          "nnoremap <silent> gs :ALESymbolSearch<CR>"
+                         ]
+        },
+
+        {
+            "name": "coc.nvim",
+            "description": "Intellisense engine.",
+            "wget": "git clone --depth=1 -b release https://github.com/neoclide/coc.nvim.git",
+            "post_process": ":exec 'helptags '.PackHome().'/opt/coc.nvim/doc'",
+            "on_finish": [
+                          "let script = PackHome().'/opt/coc.nvim/init.vim'",
+                          "if filereadable(script)",
+                          "    exec 'source '.script",
+                          "endif"
+                         ]
+        },
+
+        {
+          "name" : "TweakWnd",
+          "description" : "",
+          "wget" : "mkdir TweakWnd && wget --no-check-certificate -O TweakWnd/TweakWnd.zip https://codeload.github.com/libinwa/TweakWnd/zip/master",
+          "post_process" : "cd TweakWnd && 7z e TweakWnd.zip",
+          "on_finish" : [
+                         ":if WINDOWS() && has('gui_running')",
+                         ":    if !filereadable(expand($VIMRUNTIME).'/TweakWnd.dll')",
+                         ":        let  src = PackHome().'/opt/TweakWnd/TweakWnd.dll'",
+                         ":        let dest = expand($VIMRUNTIME).'/TweakWnd.dll'",
+                         ":        if rename(src, dest) !=? 0",
+                         ":            echomsg printf('Move (%s) to (%s) failed, please move manually.', src, dest)",
+                         ":        endif",
+                         ":    endif",
+                         ":    let g:Current_Alpha = 255",
+                         ":    let g:Top_Most = 0",
+                         ":    fun! Alpha_add()",
+                         ":        let g:Current_Alpha = g:Current_Alpha + 10",
+                         ":        if g:Current_Alpha > 255",
+                         ":            let g:Current_Alpha = 255",
+                         ":        endif",
+                         ":        call libcallnr('TweakWnd.dll','SetAlpha',g:Current_Alpha)",
+                         ":    endfun",
+                         ":    fun! Alpha_sub()",
+                         ":        let g:Current_Alpha = g:Current_Alpha - 10",
+                         ":        if g:Current_Alpha < 155",
+                         ":            let g:Current_Alpha = 155",
+                         ":        endif",
+                         ":        call libcallnr('TweakWnd.dll','SetAlpha',g:Current_Alpha)",
+                         ":    endfun",
+                         ":    fun! Top_window()",
+                         ":        if  g:Top_Most == 0",
+                         ":            call libcallnr('TweakWnd.dll','EnableTopMost',1)",
+                         ":            let g:Top_Most = 1",
+                         ":        else",
+                         ":            call libcallnr('TweakWnd.dll','EnableTopMost',0)",
+                         ":            let g:Top_Most = 0",
+                         ":        endif",
+                         ":    endfun",
+                         ":    nnoremap <M-Up> :call Alpha_add()<CR>",
+                         ":    nnoremap <M-Down> :call Alpha_sub()<CR>",
+                         ":    nnoremap <M-F11> :call Top_window()<CR>",
+                         ":    nnoremap <F11> <Esc>:call libcallnr('TweakWnd.dll', 'ToggleFullScreen', 'VimTextArea')<CR> ",
+                         ":endif"
+                        ]
+        }
+
+    ]
+}
