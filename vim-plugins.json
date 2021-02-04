@@ -117,7 +117,8 @@
                         "let g:UltiSnipsExpandTrigger='<tab>'",
                         "let g:UltiSnipsJumpForwardTrigger='<c-b>'",
                         "let g:UltiSnipsJumpBackwardTrigger='<c-z>'",
-                        "let g:UltiSnipsEditSplit='vertical'"
+                        "let g:UltiSnipsEditSplit='vertical'",
+                        "let g:UltiSnipsSnippetDirectories = ['UltiSnips']"
                        ]
         },
 
@@ -126,7 +127,7 @@
           "description" : "My code snippets repo.",
           "wget" : "git clone --depth=1 https://github.com/libinwa/mycode-snippets.git",
           "post_process" : "",
-          "on_finish": ""
+          "on_finish": "let g:UltiSnipsSnippetDirectories += ['mycode-snippets']"
         },
 
         {
