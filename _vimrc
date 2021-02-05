@@ -297,7 +297,7 @@
 " }
 
 
-" Key (re)Mappings {
+" Keymap (re)Mappings {
     " The user-defined command and abbreviation placed in this section too
     " The default Leader is '\', you can set it to any other character override this behavior
     let g:mapleader = '\'
@@ -310,8 +310,6 @@
 
     " Goto file under cursor, opens file in a new vertical
     nnoremap gf :vertical wincmd f<CR>
-
-    nnoremap lt :Lexplore<CR>
 
     " Backspace to cancel match-highlight provisionally
     nnoremap <BS> :noh<CR>
