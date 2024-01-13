@@ -1,0 +1,91 @@
+# Alacritty
+# https://alacritty.org
+
+#import = [
+#  '~/.config/alacritty/colors/light.toml'
+#]
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+#font.size = 14.0
+size = 14.0
+normal.family = 'Inconsolata'
+
+[window]
+title = "Alacritty"
+padding = { x = 12, y = 12}
+dynamic_padding = true
+decorations = "Full"
+opacity = 1.0
+
+
+[colors]
+draw_bold_text_with_bright_colors = false
+
+[colors.primary]
+foreground = "#d2d2d2"
+background = "#252323"
+
+[colors.normal]
+black = "#111213"
+red = "#bb443a"
+green = "#8ea77b"
+yellow = "#d4bf7e"
+blue = "#8ba3b3"
+magenta = "#aa92ad"
+cyan = "#85b3b3"
+white = "#d7d5cf"
+
+[colors.cursor]
+text = "CellBackground"
+cursor = "CellForeground"
+#cursor = "#5fd7af"
+
+[cursor]
+style = { shape = "block", blinking = "never" }
+# blink_interval = 750
+
+[mouse]
+hide_when_typing = true
+
+[bell.command]
+program = 'osascript'
+args = ['-e', 'beep']
+
+
+# Key bindings
+
+[[keyboard.bindings]]
+key = 'n'
+mods = 'Control|Shift'
+action = 'CreateNewWindow'
+
+[[keyboard.bindings]]
+key = 'p'
+mods = 'Control|Shift'
+action = 'SpawnNewInstance'
+
+[[keyboard.bindings]]
+key = 'Up'
+mods = 'Control | Shift'
+action = "ScrollLineUp"
+
+[[keyboard.bindings]]
+key = 'Down'
+mods = 'Control | Shift'
+action = "ScrollLineDown"
+
+[[keyboard.bindings]]
+key = 'F'
+mods = 'Control | Shift'
+action = "ToggleFullScreen"
+
+[[keyboard.bindings]]
+key = 'A'
+mods = 'Control | Shift'
+action = "ToggleViMode"
+
+[selection]
+save_to_clipboard = true

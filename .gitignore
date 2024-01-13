@@ -1,0 +1,5 @@
+# git ignore
+*.un~
+*.swp
+*.tags
+**/.cache/
