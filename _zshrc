@@ -1,0 +1,45 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+setopt extendedglob
+bindkey -v
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/c/Users/libin/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+
+# Format the prompt
+#export PROMPT='%n@%m %1~ %# '
+export PROMPT='%F{13}%1~ %F{50}%B%# %f%b'
+#echo -e "\033];this is the title\007"
+
+# Which plugins would you like to load?
+# Put it in the following set
+plugins=(
+    ~/.fzf.zsh
+    ~/.zshudir/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    ~/.zshudir/zsh-autosuggestions/zsh-autosuggestions.zsh
+)
+# Loop to load plugins in the set
+for plug in $plugins
+    do [ -f $plug ] && source $plug
+done
+# Loading is done
+
+# You may manually set specific plugin at here
+## fzf settings
+export FZF_DEFAULT_COMMAND="fd . "
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd -t d . "
+
+# useful alias
+alias fda='fd -IH'
+alias rga='rg -uuu' 
+
