@@ -10,7 +10,7 @@ exit /b
 :domake
 rem Make the project with CMake
 echo usage:
-echo   make ^<path^> ^<[debug][release]^> 
+echo   make ^<path^> ^<[debug][release]^>
 echo.
 echo   -- PROJECT_DIR: %1
 echo   -- CONFIG_TYPE: %2
@@ -49,14 +49,14 @@ echo.
 rem CMAKE_<LANG>_COMPILER_ID: MSVC  | GNU  | Clang
 set MAKE_OPTION_COMPILER=msvc
 set MAKE_OPTION_GENERATOR=Ninja
-set MAKE_OPTION_DEFINATIONS=
+set MAKE_OPTION_ADDITIONAL_DEFS=
 
 if EXIST "%DEVTOOLS%" (
   echo.
   echo   -- DEVTOOLS: %DEVTOOLS%
   echo.
   call %DEVTOOLS%\tool_cmake\prepare.bat
-  set MAKE_OPTION_DEFINATIONS=-DCMAKE_TOOLCHAIN_FILE="%DEVTOOLS%\\tool_cmake\\addons\\modulesX\\Platform\\win-msvc-x64.cmake" -DMSC_REQ_ADAPTER=1
+  set MAKE_OPTION_ADDITIONAL_DEFS=-DCMAKE_TOOLCHAIN_FILE="%DEVTOOLS%\\tool_cmake\\addons\\modulesX\\Platform\\win-msvc-x64.cmake"
 )
 
 echo.
@@ -81,8 +81,8 @@ if NOT EXIST "%INSTALL_PATH%" mkdir %INSTALL_PATH%
 echo -------------------------------------------------------
 echo configurate %CONFIG_TYPE%
 echo -------------------------------------------------------
-::cmake -S %SOURCE_ROOT% -B %BUILD_PATH% -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=%CONFIG_TYPE% -DCMAKE_INSTALL_PREFIX=%INSTALL_PATH% -DCMAKE_EXPORT_COMPILE_COMMANDS=True %MAKE_OPTION_DEFINATIONS%
-cmake -S %SOURCE_ROOT% -B %BUILD_PATH% -G "%MAKE_OPTION_GENERATOR%"  -DCMAKE_BUILD_TYPE=%CONFIG_TYPE% -DCMAKE_INSTALL_PREFIX=%INSTALL_PATH% -DCMAKE_EXPORT_COMPILE_COMMANDS=True %MAKE_OPTION_DEFINATIONS%
+::cmake -S %SOURCE_ROOT% -B %BUILD_PATH% -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=%CONFIG_TYPE% -DCMAKE_INSTALL_PREFIX=%INSTALL_PATH% -DCMAKE_EXPORT_COMPILE_COMMANDS=True %MAKE_OPTION_ADDITIONAL_DEFS%
+cmake -S %SOURCE_ROOT% -B %BUILD_PATH% -G "%MAKE_OPTION_GENERATOR%"  -DCMAKE_BUILD_TYPE=%CONFIG_TYPE% -DCMAKE_INSTALL_PREFIX=%INSTALL_PATH% -DCMAKE_EXPORT_COMPILE_COMMANDS=True %MAKE_OPTION_ADDITIONAL_DEFS%
 if NOT errorlevel 0 (
   echo configuration errors found!!!
   popd
@@ -110,7 +110,7 @@ exit /b
 :build
 rem Build the project with CMake
 echo usage:
-echo   build ^<buildpath^> ^<[debug][release]^> 
+echo   build ^<buildpath^> ^<[debug][release]^>
 echo.
 echo build %1 %2
 echo.
@@ -141,7 +141,7 @@ exit /b
 echo Script to do make workflow.
 echo.
 echo usage:
-echo   make ^<project-path^> ^<[debug][release]^> 
+echo   make ^<project-path^> ^<[debug][release]^>
 echo.
 echo Processing info is logged to stdout.
 echo Detected issues are logged to stderr.

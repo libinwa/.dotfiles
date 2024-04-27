@@ -1,5 +1,9 @@
 # git ignore
 *.un~
 *.swp
-*.tags
+**/.tags
 **/.cache/
+.vs
+.vscode
+out/*
+*.orig

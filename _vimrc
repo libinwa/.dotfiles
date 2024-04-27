@@ -74,9 +74,9 @@
     set nowrap                      " Do not wrap long lines
     set number                      " Line numbers on
     set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
-    set path+=**                    " 检索file_in_path时递归查找子目录
+    "set path+=**                    " 检索file_in_path时递归查找子目录, 递归就会拖慢
     set relativenumber              " Line relative numbers on
-    "set spell                       " Spell checking on
+    set spell                       " Spell checking on
     set shiftwidth=2                " Use indents of 2 spaces
     set showmatch                   " Show matching brackets/parenthesis
     set smartcase                   " Case sensitive when uc present
@@ -213,7 +213,6 @@
     " 注：若配"<leader>"为"\"，在常规模式下，如<leader>t是按"\"键加"t"键，不是同时按而是先按"\"键
     " 后按"t"键，间隔在一秒内，再如<leader>cM是先按"\"键再按"c"又再按"M"键
 
-    " 这个mapping会为你的左手减轻很多负担
     inoremap jk <ESC>
     nnoremap ,q <Cmd>bdelete<CR>
     nnoremap ,p <Cmd>bprevious<CR>
@@ -238,9 +237,12 @@
     nnoremap <leader>mm :<C-U><C-R><C-R>='let @'. v:register .' = '. string(getreg(v:register))<CR><C-F><LEFT>
     " Run the selected vimscript lines
     command! -range Run let lines = getline(<line1>,<line2>) | call execute(lines,'') | echo len(lines).' lines executed.'
-    " Run the CLI at the current line
+    " Run the CLI at the current line or CLIs in the selected lines with shell
     nnoremap <space><enter> ""yy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf<CR>""P<CR>:exec '%!'.&shell<CR>
+    vnoremap <space><enter> "vy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf<CR>"vP<CR>:exec '%!'.&shell<CR>
     nnoremap <leader>vs :exec 'vsplit' simplify(PackHome().'/../scripts/snippets.md')<CR> " 选中沉淀，Run或<space><enter>
+    if &spell == 1 | let &spf = simplify(PackHome().'/../scripts/spell.'.&encoding.'.add') | nnoremap <leader>vz :exec 'vsplit' &spf<CR> | endif
+    nnoremap <ESC>< :vertical res -5<CR> | nnoremap <ESC>> :vertical res +5<CR> | nnoremap <C-j> :horizontal res +5<CR> | nnoremap <C-k> :horizontal res -5<CR>
 " }
 
 
@@ -312,12 +314,12 @@
         set statusline+=%<%#Pmenu#\ %{GitBranch()!=#''?GitBranch().'\ \|':''}\ %*
         set statusline+=%<%#Pmenu#\%f\ %*
         set statusline+=%<%#Pmenu#\|\ %w%m%r[b%n/%{BuffersListed()}]\ %*
-        set statusline+=%<%#SignColumn#\ %{filereadable(@%)?SizeofFile():''}\ %*
+        set statusline+=%<%#SignColumn#\ %{ReadableSize(wordcount().bytes)}\ %*
         set statusline+=%<%#SignColumn#\ %=    " Right side
         set statusline+=%<%#SignColumn#\ %{FencStr()},%{&ff}/%{&ft!=#''?&ft:'no\ ft'}\ %*
-        set statusline+=%<%#CursorLine#\ %p%%\ %*                         " Right aligned file nav info
+        set statusline+=%<%#Visual#\ %p%%\ %*                   " Right aligned file navigation info.
         set statusline+=%<%#Visual#\ %(%3l:%-2c\ %)%*
-        set statusline+=%<%#StatusLineTermNC#\ %{winnr()}\ %*
+        set statusline+=%<%#StatusLineTermNC#\ %{winnr()}\ %*   " Type N<C-W>w can go to No.N window.
     endif
 
     if has('gui_running')
@@ -379,20 +381,14 @@
         " Insert current time at the cursor position
         inoremap <C-D> <C-R>=CurrentTime()<CR>
 
-        function! SizeofFile(...)
-            "           ---0------1-----2-----3--
-            let unit = ['Bytes', 'KB', 'MB', 'GB']
-            let size = getfsize(expand('%'))
-            if a:0 >= 1 && filereadable(expand(a:1))
-                let size = getfsize(expand(a:1))
-            endif
-            let p = 0 | let l = size
+        function! ReadableSize(size)               " ---0------1-----2-----3--
+            let p = 0 | let l = a:size | let unit = ['Bytes', 'KB', 'MB', 'GB']
             while l > 1024 | let l = l / 1024.0 | let p = p + 1 | endwhile
-            let readableSize = printf('%d %s', size, unit[0])
-            if p > 0 | let readableSize = printf('%d %s, %.2f %s', size, unit[0], l, unit[p]) | endif
+            let readableSize = printf('%d %s', a:size, unit[0])
+            if p > 0 | let readableSize = printf('%d %s, %.2f %s', a:size, unit[0], l, unit[p]) | endif
             return readableSize
         endfunction
-        command! -nargs=? -complete=file Size echo SizeofFile(<q-args>)
+        command! -nargs=? -complete=file Size echo ReadableSize(getfsize(@%))
 
         function! Redirect(...)
           let cmd = join(a:000, ' ')
@@ -594,17 +590,15 @@
 
 
 " For Plugins {
-    " Update vim-plug and load all packages
     silent function! VimPlugUpdate()
         let l:filename = PackHome().'/plug.vim'
         if !filereadable(l:filename)
             let l:uri = "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
             call JobStart('Download vim-plug', 'curl -vLs -o '.l:filename.' '.l:uri, PackHome())
         else
-            " Load vim-plugins.vim based on `vim-plug`
             exec 'source '.l:filename
             nnoremap <leader>vp :execute 'vsplit' PackHome().'/vim-plugins.vim'<CR>
-            if filereadable(PackHome().'/vim-plugins.vim')
+            if filereadable(PackHome().'/vim-plugins.vim')  " Load vim-plugins.vim based on `vim-plug`
                 exec 'source '.PackHome().'/vim-plugins.vim'
             else
                 let l:tmplst = [ '" Specify a directory for plugins',

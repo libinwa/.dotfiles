@@ -32,8 +32,8 @@ if executable('fzf') && !exists('g:loaded_fzf')
 endif
 command! -bang Fd  call fzf#vim#files(ProjectDir(), fzf#vim#with_preview({'source':'rg --files                      --follow'}), <bang>0)
 command! -bang Fda call fzf#vim#files(ProjectDir(), fzf#vim#with_preview({'source':'rg --files --no-ignore --hidden --follow'}), <bang>0)
-command! -nargs=? -bang Rg  call fzf#vim#grep('rg      --column --line-number --no-heading --color=always --smart-case -- '.fzf#shellescape(<q-args>).' '.ProjectDir(), fzf#vim#with_preview(), <bang>0)
-command! -nargs=? -bang Rga call fzf#vim#grep('rg -uuu --column --line-number --no-heading --color=always --smart-case -- '.fzf#shellescape(<q-args>).' '.ProjectDir(), fzf#vim#with_preview(), <bang>0)
+command! -nargs=? -bang Rg  exec 'lcd' ProjectDir() | call fzf#vim#grep('rg      --column --line-number --no-heading --color=always --smart-case -- '.fzf#shellescape(<q-args>), fzf#vim#with_preview(), <bang>0)
+command! -nargs=? -bang Rga exec 'lcd' ProjectDir() | call fzf#vim#grep('rg -uuu --column --line-number --no-heading --color=always --smart-case -- '.fzf#shellescape(<q-args>), fzf#vim#with_preview(), <bang>0)
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
@@ -129,6 +129,7 @@ augroup END
 " Plug 'skywind3000/gutentags_plus'
 """"""""""""""""""""""""""""""""""""""
 let g:gutentags_project_root = g:theProject.markers
+let g:gutentags_add_default_project_roots = 0
 let g:gutentags_modules = []
 if executable('ctags')
     let g:gutentags_modules += ['ctags']
@@ -149,25 +150,11 @@ let g:gutentags_plus_switch = 1
 
 colo industry
 
+"let $PATH = PackHome()."/../scripts".";".$PATH    " for running local scripts
 "let &pythonthreehome=expand("$HOME/.conda/envs/py38")
 "let $PATH .= ";".&pythonthreehome.";".&pythonthreehome."/Scripts"
 "let $PATH = "C:/Program Files/Git/usr/bin".";".$PATH     " for various tool at git home.
 "
-""Local making
-""
-""How about remote? (Sync to remote==>Remote make&test)
-""After adding the remote host into the $HOME/.ssh/config, call SyncTo(srcpath)
-""Try `Sync ./*`
-""SSH can do remote commands like: ssh remotehost "-----call shell script to do the make-----"
-""Try remote make with it: Start ssh libin@NanoPi "cd /var/tmp/cmakelua4/private/make; export LINUX_FLAVOR=./linux_flavor.sh;./build.sh `$LINUX_FLAVOR`-gcc-x64 debug"
-""
-""To local make with `Quick make . debug|release`, inserts /path/to/scripts/make.bat
-"let $PATH = PackHome()."/../scripts".";".$PATH    " for scripts/make.bat
-"
-"" for static-check, append /path/to/tool_cppcheck.bat script
-"command! -nargs=0 StaticCheck exec 'cd '.ProjectDir() | Quick run_cppcheck.bat -q private/src -Ipublic/include -Iprivate/dependencies/3sdk/public/include
-"let $PATH = $DEVTOOLS."/tool_cppcheck".";".$PATH
-
 
 "Tips:
 "-----
@@ -176,18 +163,26 @@ colo industry
 
 " usefull snippets:
 " ------- macros/registers -------
-"let @w = 'sftp -P 22222 libin@127.0.0.1'
-"let @w = 'ssh libin@127.0.0.1 -p 123456'
 "let @w='0oif (CMAKE_EXPORT_COMPILE_COMMANDS) add_custom_target( copy-compile-commands ALL ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_BINARY_DIR}/compile_commands.json ${CMAKE_CURRENT_LIST_DIR} COMMENT "Copy ${CMAKE_BINARY_DIR}/compile_commands.json to ${CMAKE_CURRENT_LIST_DIR} ") endif() '
 "Git: How to pick specific commits to this branch.
 "  git cherry-pick <commitId>  --no-commit #Pick the target commit to this branch
 "  git cherry-pick <commitId>..<commintId> --no-commit   #Pick commits(A,B] to this branch
 "  git cherry-pick <commitId>^..<commitId> --no-commit   #Pick commits[A,B] to this branch
 "  git cherry-pick <branch> --no-commit     #Pick the HEAD commit to this branch.
-"Undo: goto the old text state about 1 minute before, try: earlier 1m.
-"Copying...
-" xcopy /F /Y /path/to/src /path/to/dest
 "
+""Local making, /path/to/scripts/make.bat has added.
+"Quick make . debug
+"Start make . release
+"
+""How about remote? (Sync to remote==>Remote make&test)
+""After adding the remote host into the $HOME/.ssh/config, try `Sync ./*`
+""SSH can do remote commands like: ssh remotehost "-----call shell script to do the make-----"
+""Try remote make with it: Start ssh libin@NanoPi "cd /var/tmp/cmakelua4/private/make; export LINUX_FLAVOR=./linux_flavor.sh;./build.sh `$LINUX_FLAVOR`-gcc-x64 debug"
+""
+""For the Static-Check, append /path/to/tool_cppcheck.bat script
+"let $PATH = "path/to/tool_cppcheck".";".$PATH
+"exec 'cd ' ProjectDir() | Quick run_cppcheck.bat
+
 " Make sentences...
 "  她已经知道这件事了，我口误（说溜了嘴, slip of the tongue）说了。
 "  She has known this thing, I slipped of the tongue.
