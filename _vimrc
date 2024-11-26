@@ -220,9 +220,9 @@
     nnoremap <space><enter> ""yy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf<CR>""P<CR>:exec '%!'.&shell<CR>
     vnoremap <space><enter> "vy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf<CR>"vP<CR>:exec '%!'.&shell<CR>
     command! -range Puml exec 'normal! gv"vy' | bo new | setl bt=nofile bh=wipe nobl noswf | exec 'normal! "vP' |
-          \ exec '%!java -jar MyVimrcDir().'/private/tools/plantuml.jar -v -tsvg -pipe > #<-diagram.svg'
-    nnoremap <leader>vs :exec 'vsplit' MyVimrcDir().'/private/scripts/snippets.md'<CR> " 选中沉淀，Run或<space><enter>
-    if &spell == 1 | let &spf = MyVimrcDir().'/private/scripts/spell.'.&encoding.'.add' | nnoremap <leader>vz :exec 'vsplit' &spf<CR> | endif
+          \ exec '%!java -jar MyVimrcDir().'/tools.libs.scripts/tools/plantuml.jar -v -tsvg -pipe > #<-diagram.svg'
+    nnoremap <leader>vs :exec 'vsplit' MyVimrcDir().'/tools.libs.scripts/scripts/snippets.md'<CR> " 选中沉淀，Run或<space><enter>
+    if &spell == 1 | let &spf = MyVimrcDir().'/tools.libs.scripts/scripts/spell.'.&encoding.'.add' | nnoremap <leader>vz :exec 'vsplit' &spf<CR> | endif
     nnoremap <ESC>< :vertical res -5<CR> | nnoremap <ESC>> :vertical res +5<CR> | nnoremap <C-j> :horizontal res +5<CR> | nnoremap <C-k> :horizontal res -5<CR>
     command! -nargs=* -complete=dir Ls  call JobStart('ls',      'rg --files                      --follow --sort path '.<q-args>.' ')
     command! -nargs=* -complete=dir Lsa call JobStart('ls -all', 'rg --files --no-ignore --hidden --follow --sort path '.<q-args>.' ')
@@ -544,7 +544,7 @@
 
         " Encapsulate the job_start function. Usage: JobStart(jid, cmd, [cwd], [callback])
         silent function! JobStart(...)
-          let l:jid = substitute(strpart(get(a:000, 0, []), 0, 64), '\W', '-', 'g') 
+          let l:jid = substitute(strpart(get(a:000, 0, []), 0, 64), '\W', '-', 'g')
           let l:cmd = trim(get(a:000, 1, []))
           let l:cwd = trim(get(a:000, 2, getcwd())) | let l:Cb = get(a:000, 3, {})
           if has('job') && exists('*job_start') && exists('*job_status')
@@ -595,9 +595,9 @@
         call JobStart('Download vim-plug', 'curl -vLs -o '.PackHome().'/plug.vim '.l:uri, PackHome())
       else
         exec 'source '.PackHome().'/plug.vim'
-        nnoremap <leader>vp :execute 'vsplit' MyVimrcDir().'/vim-plugins.vim'<CR>
-        if filereadable(MyVimrcDir().'/vim-plugins.vim')  " Load vim-plugins.vim based on `vim-plug`
-          exec 'source '.MyVimrcDir().'/vim-plugins.vim'
+        nnoremap <leader>vp :execute 'vsplit' MyVimrcDir().'/.vim-plugins.vim'<CR>
+        if filereadable(MyVimrcDir().'/.vim-plugins.vim')  " Load .vim-plugins.vim based on `vim-plug`
+          exec 'source '.MyVimrcDir().'/.vim-plugins.vim'
         else
           let l:tmplst = [ '" Specify a directory for plugins',
                       \ 'call plug#begin(PackHome())',
@@ -607,8 +607,8 @@
                       \ 'Plug ''junegunn/fzf.vim''',
                       \ 'call plug#end()',
                       \ '" INITIALIZATION OF PLUGINs']
-          if writefile(l:tmplst, MyVimrcDir().'/vim-plugins.vim', 'b') !=? 0
-            echohl WarningMsg | echomsg 'Write file (vim-plugins.vim) failed.' | echohl NONE
+          if writefile(l:tmplst, MyVimrcDir().'/.vim-plugins.vim', 'b') !=? 0
+            echohl WarningMsg | echomsg 'Write file (.vim-plugins.vim) failed.' | echohl NONE
             nunmap <leader>vp
           endif
         endif

@@ -5,8 +5,10 @@ Git clone .dotfiles repository, like this:
 
 ## Settings for vim
 
-> My vimrc, plugins configured in vim-plugins.vim script file based vim-plug manager.
+> My vimrc, plugins configured in .vim-plugins.vim script file based vim-plug manager.
 
+Simply `source path/to/.dotfiles/_vimrc` to load this vimrc.
+Or
 1. Switch your working directory to your `$HOME`
 2. Copy file `.dotfiles/_vimrc` to your `$HOME`
 
