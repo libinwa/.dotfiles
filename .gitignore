@@ -1,0 +1,10 @@
+# git ignore
+*.un~
+*.swp
+**/.tags
+**/.cache/
+.vs
+.vscode
+out/*
+*.orig
+.vim/*
