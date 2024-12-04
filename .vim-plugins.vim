@@ -177,21 +177,6 @@ colo industry
 "  git cherry-pick <commitId>..<commintId> --no-commit   #Pick commits(A,B] to this branch
 "  git cherry-pick <commitId>^..<commitId> --no-commit   #Pick commits[A,B] to this branch
 "  git cherry-pick <branch> --no-commit     #Pick the HEAD commit to this branch.
-"
-""Local making, /path/to/scripts/make.bat has added.
-"Quick make . debug
-"Start make . release
-"
-""How about remote? (Sync to remote==>Remote make&test)
-""After adding the remote host into the $HOME/.ssh/config, try `Sync ./*`
-""SSH can do remote commands like: ssh remotehost "-----call shell script to do the make-----"
-""Try remote make with it: Start ssh libin@NanoPi "cd /var/tmp/cmakelua4/private/make; export LINUX_FLAVOR=./linux_flavor.sh;./build.sh `$LINUX_FLAVOR`-gcc-x64 debug"
-""
-""For the Static-Check, append /path/to/tool_cppcheck.bat script
-"let $PATH = "path/to/tool_cppcheck".";".$PATH
-"exec 'cd ' ProjectDir() | Quick run_cppcheck.bat
-
 " Make sentences...
 "  她已经知道这件事了，我口误（说溜了嘴, slip of the tongue）说了。
 "  She has known this thing, I slipped of the tongue.
-"

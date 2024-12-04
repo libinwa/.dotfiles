@@ -48,13 +48,12 @@
     set encoding=utf-8              " Sets the character encoding used inside Vim.
     scriptencoding utf-8            " If you set the 'encoding' option :scriptencoding must be placed after that.
     set fileencoding=utf-8          " Sets the character encoding for the file of this buffer.
-    " This :fileencodings is a list of character encodings considered when starting to edit an existing file.
-    " When a file is read, Vim tries to use the first mentioned character encoding.
+    " When editing an existing file, Vim tries to use the first mentioned character encoding in the :fileencodings
     set fileencodings=ucs-bom,utf-8,gbk,gb2312,gb18030,big5,cp936,latin1
 
     syntax enable                   " Syntax highlighting
 
-    set shortmess+=filmnrxoOtT      " Abbrev. of messages (set shortmess=atI   " 去掉欢迎界面)
+    set shortmess+=filmnrxoOtT      " 去掉欢迎界面 set shortmess=atI
     set autoindent                  " Indent at the same level of the previous line
     set autoread                    " 当文件在外部被修改，自动更新该文件
     "set autowrite                   " Write a file when leaving a modified buffer
@@ -188,10 +187,8 @@
 
 
 " Key Mappings {
-    " The default leader is '\', you can set a new key to override the default.
-    let g:mapleader = '\'
-    " 注：若配"<leader>"为"\"，在常规模式下，如<leader>t是按"\"键加"t"键，不是同时按而是先按"\"键
-    " 后按"t"键，间隔在一秒内，再如<leader>cM是先按"\"键再按"c"又再按"M"键
+    " 注：在常规模式下，<leader>cM就是按\键再按t键又再按M键，无须同时，允许按键间隔一秒。
+    let g:mapleader = '\'     " Default leader is '\'
 
     inoremap jk <ESC>
     nnoremap ,q <Cmd>bdelete<CR>
@@ -212,18 +209,18 @@
     " 常规模式下输入<leader>cM清除行尾^M符号
     nnoremap <leader>cM :%s/\r$//g<CR>:noh<CR>
     nnoremap <leader>lc :let @*=expand('%:p').' :'.line('.').':'.col('.')<CR>:echo '-=Cursor Postion Copied=-'<CR>
+    if &spell == 1 | let &spf = MyVimrcDir().'/tools.libs.scripts/scripts/spell.'.&encoding.'.add' | nnoremap <leader>vz :exec 'vsplit' &spf<CR> | endif
+    nnoremap <ESC>< :vertical res -5<CR> | nnoremap <ESC>> :vertical res +5<CR> | nnoremap <C-j> :horizontal res +5<CR> | nnoremap <C-k> :horizontal res -5<CR>
     " Create a stmt to insert keys into register, try: "w<leader>mm
     nnoremap <leader>mm :<C-U><C-R><C-R>='let @'. v:register .' = '. string(getreg(v:register))<CR><C-F><LEFT>
     " Run the selected vimscript lines
     command! -range Run let lines = getline(<line1>,<line2>) | call execute(lines,'') | echo len(lines).' lines executed.'
     " Run the CLI at the current line or CLIs in the selected lines with shell
-    nnoremap <space><enter> ""yy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf<CR>""P<CR>:exec '%!'.&shell<CR>
-    vnoremap <space><enter> "vy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf<CR>"vP<CR>:exec '%!'.&shell<CR>
+    nnoremap <space><enter> ""yy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf nowrap nospell<CR>""P<CR>:exec '%!'.&shell<CR>
+    vnoremap <space><enter> "vy:bo new<CR>:setl bt=nofile bh=wipe nobl noswf nowrap nospell<CR>"vP<CR>:exec 'lcd '.ProjectDir()<CR>:exec '%!'.&shell<CR>
     command! -range Puml exec 'normal! gv"vy' | bo new | setl bt=nofile bh=wipe nobl noswf | exec 'normal! "vP' |
           \ exec '%!java -jar '.MyVimrcDir().'/tools.libs.scripts/tools/plantuml.jar -v -tsvg -pipe > #<-diagram.svg'
     nnoremap <leader>vs :exec 'vsplit' MyVimrcDir().'/tools.libs.scripts/scripts/snippets.md'<CR> " 选中沉淀，Run或<space><enter>
-    if &spell == 1 | let &spf = MyVimrcDir().'/tools.libs.scripts/scripts/spell.'.&encoding.'.add' | nnoremap <leader>vz :exec 'vsplit' &spf<CR> | endif
-    nnoremap <ESC>< :vertical res -5<CR> | nnoremap <ESC>> :vertical res +5<CR> | nnoremap <C-j> :horizontal res +5<CR> | nnoremap <C-k> :horizontal res -5<CR>
 " }
 
 
@@ -415,7 +412,7 @@
             new
             setf OutputWindow
             syntax clear
-            setlocal modifiable buftype=nofile bufhidden=wipe nobuflisted nolist noswapfile nowrap cursorline nospell
+            setlocal modifiable buftype=nofile bufhidden=wipe nobuflisted nolist noswapfile nowrap nospell
             nnoremap <silent><buffer> q :q!<CR>
             put! = output
             call append('$', "---")
@@ -518,7 +515,7 @@
             if l:wid ==? -1
               silent execute 'new ⌕ '.a:jid
               syntax clear
-              setlocal modifiable buftype=nofile bufhidden=wipe nobuflisted nolist noswapfile nowrap cursorline nospell
+              setlocal modifiable buftype=nofile bufhidden=wipe nobuflisted nolist noswapfile nowrap nospell
               let b:job = ch_getjob(a:channel) | let b:ss = 0   " Hold the job and scrolling switch
               nnoremap <silent><buffer> q :call job_stop(b:job, 'kill')<CR>
               nnoremap <silent><buffer><leader>ss :let b:ss = (b:ss != 0)? 0 : 1<CR>
