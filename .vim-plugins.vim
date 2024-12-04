@@ -3,16 +3,17 @@ call plug#begin(PackHome())
 "
 " List the plugins with Plug commands
 "
-Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-fugitive'
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'tpope/vim-fugitive'
 Plug 'yegappan/lsp'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'skywind3000/gutentags_plus'
-Plug 'diepm/vim-rest-console'
-Plug 'Freed-Wu/cppinsights.vim'
-Plug 'puremourning/vimspector'
+"Plug 'ludovicchabant/vim-gutentags'
+"Plug 'skywind3000/gutentags_plus'
+"Plug 'stefandtw/quickfix-reflector.vim'
+"Plug 'diepm/vim-rest-console'
+"Plug 'Freed-Wu/cppinsights.vim'
+"Plug 'puremourning/vimspector'
 call plug#end()
 " INITIALIZATION OF PLUGINs
 
@@ -131,24 +132,26 @@ augroup END
 " Plug 'ludovicchabant/vim-gutentags'
 " Plug 'skywind3000/gutentags_plus'
 """"""""""""""""""""""""""""""""""""""
-let g:gutentags_project_root = g:theProject.markers
-let g:gutentags_add_default_project_roots = 0
-let g:gutentags_modules = []
-if executable('ctags')
-    let g:gutentags_modules += ['ctags']
+if isdirectory(PackHome().'/vim-gutentags')
+  let g:gutentags_project_root = g:theProject.markers
+  let g:gutentags_add_default_project_roots = 0
+  let g:gutentags_modules = []
+  if executable('ctags')
+      let g:gutentags_modules += ['ctags']
+  endif
+  if executable('gtags') && executable('gtags-cscope')
+      let g:gutentags_modules += ['gtags_cscope']
+  endif
+  let g:gutentags_ctags_tagfile = '.cache/.tags'
+  let g:gutentags_gtags_dbpath = '.cache/tags'
+  let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
+  let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
+  let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
+  let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
+  let g:gutentags_auto_add_gtags_cscope = 0
+  let g:gutentags_define_advanced_commands = 1
+  let g:gutentags_plus_switch = 1
 endif
-if executable('gtags') && executable('gtags-cscope')
-    let g:gutentags_modules += ['gtags_cscope']
-endif
-let g:gutentags_ctags_tagfile = '.cache/.tags'
-let g:gutentags_gtags_dbpath = '.cache/tags'
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
-let g:gutentags_auto_add_gtags_cscope = 0
-let g:gutentags_define_advanced_commands = 1
-let g:gutentags_plus_switch = 1
 
 " env
 let $PATH = MyVimrcDir()."/tools.libs.scripts/scripts".";".$PATH    " Got env of my scripts
@@ -177,21 +180,6 @@ colo industry
 "  git cherry-pick <commitId>..<commintId> --no-commit   #Pick commits(A,B] to this branch
 "  git cherry-pick <commitId>^..<commitId> --no-commit   #Pick commits[A,B] to this branch
 "  git cherry-pick <branch> --no-commit     #Pick the HEAD commit to this branch.
-"
-""Local making, /path/to/scripts/make.bat has added.
-"Quick make . debug
-"Start make . release
-"
-""How about remote? (Sync to remote==>Remote make&test)
-""After adding the remote host into the $HOME/.ssh/config, try `Sync ./*`
-""SSH can do remote commands like: ssh remotehost "-----call shell script to do the make-----"
-""Try remote make with it: Start ssh libin@NanoPi "cd /var/tmp/cmakelua4/private/make; export LINUX_FLAVOR=./linux_flavor.sh;./build.sh `$LINUX_FLAVOR`-gcc-x64 debug"
-""
-""For the Static-Check, append /path/to/tool_cppcheck.bat script
-"let $PATH = "path/to/tool_cppcheck".";".$PATH
-"exec 'cd ' ProjectDir() | Quick run_cppcheck.bat
-
 " Make sentences...
 "  她已经知道这件事了，我口误（说溜了嘴, slip of the tongue）说了。
 "  She has known this thing, I slipped of the tongue.
-"
