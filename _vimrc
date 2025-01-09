@@ -169,10 +169,10 @@
                   \| try | lcd %:p:h | catch /^Vim\%((\a\+)\)\=:E/ | endtry | endif
       " Restore cursor to file position in previous editing session.
       autocmd BufWinEnter * if line("'\"") <= line("$") | silent! normal! g`" | endif
-      autocmd TerminalOpen * setl nolist nowrap nospell nu nornu
       " Instead of reverting the cursor to the last position in the buffer, we
       " set it to the first line when editing a git commit message
       autocmd FileType gitcommit autocmd BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
+      autocmd TerminalOpen * setl nolist nowrap nospell nu nornu
       " For reading content of quickfix again (<leader>u), setting errorformat tell vim how to read its own quickfix list
       autocmd FileType qf setl nobl nolist nowrap nospell nu nornu
             \| set errorformat+=%f\|%l\ col\ %c\|%m
@@ -187,7 +187,7 @@
 
 " Key Mappings {
     " 注：在常规模式下，<leader>cM就是按\键再按t键又再按M键，无须同时，允许按键间隔一秒。
-    let g:mapleader = '\'     " Default leader is '\'
+    let g:mapleader = '\'     " Default leader is '\'. Try ',' or '^'??
 
     inoremap jk <ESC>
     nnoremap <leader>w <C-W>
@@ -196,14 +196,17 @@
     nnoremap ,n <Cmd>bnext<CR>
     nnoremap ,o <Cmd>b#<CR>
     nnoremap ,` <Cmd>terminal ++curwin<CR>
-    if exists('&termwinkey') | set termwinkey=<C-L> | tnoremap <C-L>p <Cmd>tabprevious<CR> | endif
     nnoremap <expr> <C-H> '<C-W><'.v:count1 | nnoremap <expr> <C-L> '<C-W>>'.v:count1
     nnoremap <expr> <C-J> '<C-W>+'.v:count1 | nnoremap <expr> <C-K> '<C-W>-'.v:count1
     nnoremap <Tab><Tab> :tab split<CR>  " Opens current buffer in new tab page
     nnoremap <Tab>n :tabnext<CR>
     nnoremap <Tab>p :tabprevious<CR>
-
     nnoremap <BS> :noh<CR>
+    if exists('&termwinkey') | set termwinkey=<C-L> | tnoremap <C-L>p <Cmd>tabprevious<CR> | endif
+    inoremap <Tab>l <C-X><C-L> | inoremap <Tab>n <C-X><C-N> | inoremap <Tab>p <C-X><C-P> | inoremap <Tab>k <C-X><C-K>
+    inoremap <Tab>t <C-X><C-T> | inoremap <Tab>i <C-X><C-I> | inoremap <Tab>] <C-X><C-]> | inoremap <Tab>f <C-X><C-F>
+    inoremap <Tab>d <C-X><C-D> | inoremap <Tab>v <C-X><C-V> | inoremap <Tab>u <C-X><C-U> | inoremap <Tab>o <C-X><C-O>
+    inoremap <Tab>s <C-X>s
     nnoremap <silent> M <Cmd>Red message<CR>
     nnoremap <silent> [q <Cmd>cprev<CR> | nnoremap <silent> ]q <Cmd>cnext<CR>
     nnoremap <silent> [w <Cmd>lprev<CR> | nnoremap <silent> ]w <Cmd>lnext<CR>
