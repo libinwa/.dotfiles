@@ -18,7 +18,7 @@ call plug#end()
 " INITIALIZATION OF PLUGINs
 
 "
-" Settings Plug 'yegappan/lsp' 
+" Settings Plug 'yegappan/lsp'
 "
 "{
 let lspServers = []
@@ -156,9 +156,15 @@ if isdirectory(PackHome().'/vim-gutentags')
 endif
 "}
 
+"
 "Tips:
-"How can I insert invisible keys into the MACRO key sequence? Press CTRL-V and then press invisible keys to input.
-"CTRL-@ ==>^@==><LF>(new line?)==>(LF?CR?)==>'\n
+" Open file location
+" !start .
+" Open file with default program
+" !start %
+" !start /B %
+" How can I insert invisible keys into the MACRO key sequence? Press CTRL-V and then press invisible keys to input.
+" CTRL-@ ==>^@==><LF>(new line?)==>(LF?CR?)==>'\n
 
 
 "

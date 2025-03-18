@@ -219,9 +219,9 @@
     if has('gui_running')
       winpos 100 10                     " 指定窗口出现的位置，坐标原点在屏幕左上角
       set lines=40 | set columns=120    " 指定窗口大小，lines为高度，columns为宽度
-      if LINUX()   | set guifont=Inconsolata\ 14,Consolas\ Regular\ 12 | endif
-      if OSX()     | set guifont=Inconsolata:h14,Consolas\ Regular:h12 | endif
-      if WINDOWS() | set guifont=Inconsolata:h18,Consolas:h10 | endif
+      if LINUX()   | set guifont=Inconsolata\ 12 | endif
+      if OSX()     | set guifont=Inconsolata:h12 | endif
+      if WINDOWS() | set guifont=Consolas:h10,Inconsolata:h12 | endif
       " 显示/隐藏菜单栏、工具栏、滚动条，可用 <C-F11> 切换
       set guioptions-=m | set guioptions-=T | set guioptions-=r | set guioptions-=L
       nnoremap <silent> <C-F11> :if &guioptions =~# 'm' <Bar>
@@ -515,9 +515,11 @@
       autocmd BufEnter * if &buftype ==? "" && bufname("") !~ "^\[A-Za-z0-9\]*://" | try | lcd %:p:h | catch /^Vim\%((\a\+)\)\=:E/ | endtry | endif
       " Restore cursor to file position in previous editing session.
       autocmd BufWinEnter * if line("'\"") <= line("$") | silent! normal! g`" | endif
-      " lineWidth 启用每行超过某一字符总数后给予字符变化提示（字体变蓝加下划线）
-      autocmd BufWinEnter * let w:m2 = matchadd('Underlined', printf('\%%>%dv.\+', float2nr(128 * 1.382)), -1)
-      " autocmd! GUIEnter * simalt ~x    " 窗口启动时自动最大化
+      " Toggle line width 启用每行超过某一字符总数后给予字符变化提示（字体变蓝加下划线）
+      autocmd BufWinEnter * if exists('w:line_width') && w:line_width | let w:m2 = matchadd('Underlined', printf('\%%>%dv.\+', 120), -1)
+            \| elseif exists('w:m2') && w:m2 != -1 | call matchdelete(w:m2) | let w:m2 = -1 | endif
+      nnoremap <silent><leader>lw :let w:line_width = !(exists('w:line_width') && w:line_width)<CR>:doautocmd VimRcAUs BufWinEnter<CR>
+      "autocmd GUIEnter * simalt ~x    " 窗口启动时自动最大化
       " Instead of reverting the cursor to the last position in the buffer, we set it to the first line when editing a git commit message
       autocmd FileType gitcommit autocmd BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])
       " For reading content of quickfix again (<leader>u), setting errorformat tell vim how to read its own quickfix list
